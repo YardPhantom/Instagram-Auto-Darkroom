@@ -1,0 +1,38 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Darkroom",
+      "hasCanvas": false,
+      "bodyTextLen": 765,
+      "bodyTextHash": "effe6f57b707d431c8bdc47e473381db497f466a8856601cbf537fa2f4f1d6d5",
+      "bodyTextPrefix": "Darkroom Instagram press for a watch folder No session 6 Start P",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Darkroom",
+      "hasCanvas": false,
+      "bodyTextLen": 570,
+      "bodyTextHash": "2f1d22d71bf558e931dcd7d0ccaaf8a26b29042bec54bd59161e7ace5aac6bd0",
+      "bodyTextPrefix": "Darkroom Instagram press for a watch folder No session 6 Start P",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": false,
+  "baselineReasons": []
+}

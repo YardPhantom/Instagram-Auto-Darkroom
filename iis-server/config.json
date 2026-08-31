@@ -1,0 +1,16 @@
+{
+  "watch_folder": "C:\\projects\\InstagramAuto",
+  "done_folder": "C:\\projects\\InstagramAuto\\done",
+  "instagram_username": "Lookinggoodmodel",
+  "instagram_password": "",
+  "posts_per_day_min": 1,
+  "posts_per_day_max": 3,
+  "min_gap_minutes": 90,
+  "quiet_hours": true,
+  "quiet_start": "23:00",
+  "quiet_end": "07:30",
+  "videos_as_reels": true,
+  "also_first_comment": false,
+  "skip_without_caption": true,
+  "auto_post": false
+}

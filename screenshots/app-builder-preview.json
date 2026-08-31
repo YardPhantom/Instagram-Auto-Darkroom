@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Darkroom",
+      "hasCanvas": false,
+      "bodyTextLen": 766,
+      "bodyTextHash": "c7457e898a3d8937c201926f2d190c8fccbdea524b188db69e9ee71c18b1d612",
+      "bodyTextPrefix": "Darkroom @Lookinggoodmodel · 1–3 posts a day No session 6 Start ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Darkroom",
+      "hasCanvas": false,
+      "bodyTextLen": 571,
+      "bodyTextHash": "7cf50368d1ca781d46315156f4922f270117b76916f7a457aee806d29865ad2b",
+      "bodyTextPrefix": "Darkroom @Lookinggoodmodel · 1–3 posts a day No session 6 Start ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}

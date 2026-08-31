@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Darkroom</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600&family=Outfit:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0c0c0d;
+        --fg: #eceae4;
+        --muted: #9a9790;
+        --card: #131314;
+        --line: #2c2c2e;
+        --paper: #e8e4dc;
+        --ink: #0c0c0d;
+        --sage: #8aa38e;
+        --rust: #c46b5a;
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; background: var(--bg); color: var(--fg); font-family: Outfit, system-ui, sans-serif; }
+      body { min-height: 100dvh; }
+      h1, h2 { font-family: Newsreader, Georgia, serif; font-weight: 500; letter-spacing: -0.02em; }
+      button, input, textarea, select { font: inherit; }
+      button { cursor: pointer; }
+      header {
+        display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center;
+        padding: 18px 22px; border-bottom: 1px solid var(--line);
+      }
+      .brand { font-family: Newsreader, Georgia, serif; font-size: 22px; }
+      .sub { color: var(--muted); font-size: 12px; margin-top: 4px; }
+      .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+      .pill {
+        display: inline-flex; align-items: center; gap: 8px;
+        border: 1px solid var(--line); border-radius: 999px; padding: 8px 12px; font-size: 12px;
+      }
+      .dot { width: 7px; height: 7px; border-radius: 99px; background: var(--muted); }
+      .dot.live { background: var(--sage); }
+      .dot.busy { background: var(--paper); }
+      button.primary, button.ghost {
+        height: 44px; padding: 0 16px; border-radius: 10px; border: 0;
+      }
+      button.primary { background: var(--paper); color: var(--ink); }
+      button.ghost { background: transparent; color: var(--fg); border: 1px solid var(--line); }
+      main { display: grid; grid-template-columns: 1.4fr 0.9fr; min-height: calc(100dvh - 78px); }
+      @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+      .tray { padding: 18px; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; align-content: start; }
+      .card {
+        background: #161618; border: 1px solid var(--line); border-radius: 16px; padding: 8px; text-align: left; color: inherit;
+      }
+      .card.active { border-color: var(--paper); }
+      .mat { background: #efece4; border-radius: 12px; padding: 6px; }
+      .mat img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; border-radius: 8px; }
+      .meta { padding: 8px 4px 4px; font-size: 12px; }
+      .name { font-family: "IBM Plex Mono", monospace; }
+      .cap { color: var(--muted); margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+      aside { border-left: 1px solid var(--line); padding: 20px; }
+      label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+      input, textarea, select {
+        width: 100%; background: #1c1c1e; color: var(--fg); border: 1px solid var(--line);
+        border-radius: 10px; padding: 10px 12px; margin-bottom: 12px;
+      }
+      textarea { min-height: 120px; resize: vertical; }
+      .err { color: var(--rust); font-size: 13px; min-height: 1.2em; }
+      .hint { color: var(--muted); font-size: 12px; line-height: 1.5; }
+      .stack { display: flex; flex-direction: column; gap: 10px; }
+      h2 { font-size: 22px; margin: 0 0 8px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <div class="brand">Darkroom</div>
+        <div class="sub">Instagram press for a watch folder</div>
+      </div>
+      <div class="row">
+        <div class="pill"><span class="dot" id="dot"></span><span id="status">Loading</span></div>
+        <button class="ghost" id="toggle">Start</button>
+        <button class="primary" id="post">Post next</button>
+      </div>
+    </header>
+    <main>
+      <section>
+        <div class="tray" id="tray"></div>
+      </section>
+      <aside>
+        <h2>Session</h2>
+        <div class="stack">
+          <div>
+            <label for="user">Instagram username</label>
+            <input id="user" autocomplete="username" />
+          </div>
+          <div>
+            <label for="pass">Password</label>
+            <input id="pass" type="password" autocomplete="current-password" />
+          </div>
+          <div id="twofa-wrap" hidden>
+            <label for="twofa">Two-factor code</label>
+            <input id="twofa" inputmode="numeric" />
+          </div>
+          <button class="primary" id="login">Save session</button>
+          <p class="err" id="err"></p>
+          <p class="hint">
+            Inbox: <span id="watch"></span><br />
+            Done: <span id="done"></span>
+          </p>
+          <p class="hint">
+            Account <span class="name">Lookinggoodmodel</span>. Each day
+            Darkroom posts 1–3 times at random, then moves used files to done.
+            Pair <span class="name">photo.jpg</span> with
+            <span class="name">photo.txt</span>.
+          </p>
+        </div>
+      </aside>
+    </main>
+    <script>
+      const $ = (id) => document.getElementById(id);
+      async function api(path, opts) {
+        const res = await fetch(path, {
+          headers: { "Content-Type": "application/json" },
+          ...opts,
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.detail || res.statusText);
+        return data;
+      }
+      function render(state) {
+        $("watch").textContent = state.settings.watch_folder;
+        $("done").textContent = state.settings.done_folder;
+        if (!$("user").value) $("user").value = state.settings.instagram_username || "";
+        $("twofa-wrap").hidden = !state.needs_2fa;
+        const live = state.running && state.logged_in;
+        $("status").textContent = state.posting
+          ? "Exposing"
+          : !state.logged_in
+            ? "No session"
+            : state.quiet
+              ? "Quiet hours"
+              : live
+                ? "Live"
+                : "Paused";
+        $("dot").className = "dot " + (state.posting ? "busy" : live && !state.quiet ? "live" : "");
+        $("toggle").textContent = state.running ? "Pause" : "Start";
+        $("err").textContent = state.last_error || "";
+        const tray = $("tray");
+        tray.innerHTML = "";
+        if (!state.queue.length) {
+          tray.innerHTML = '<p class="hint" style="grid-column:1/-1;padding:48px 12px">The tray is clear. Drop media and annotation files into the inbox.</p>';
+          return;
+        }
+        for (const item of state.queue) {
+          const btn = document.createElement("button");
+          btn.className = "card";
+          btn.type = "button";
+          const src = "/api/media?path=" + encodeURIComponent(item.path);
+          btn.innerHTML = `<div class="mat">${item.kind === "video" ? "" : `<img src="${src}" alt="">`}${item.kind === "video" ? `<img src="${src}" alt="">` : ""}</div>
+            <div class="meta"><div class="name">${item.filename}</div><div class="cap">${item.caption || "Waiting for an annotation file."}</div></div>`;
+          btn.addEventListener("click", async () => {
+            try {
+              await api("/api/queue/post", { method: "POST", body: JSON.stringify({ id: item.id }) });
+              refresh();
+            } catch (e) {
+              $("err").textContent = e.message;
+            }
+          });
+          tray.appendChild(btn);
+        }
+      }
+      async function refresh() {
+        try {
+          render(await api("/api/state"));
+        } catch (e) {
+          $("status").textContent = e.message;
+        }
+      }
+      $("login").onclick = async () => {
+        try {
+          await api("/api/instagram/login", {
+            method: "POST",
+            body: JSON.stringify({
+              username: $("user").value,
+              password: $("pass").value,
+              verification_code: $("twofa").value || null,
+            }),
+          });
+          $("err").textContent = "";
+          refresh();
+        } catch (e) {
+          $("err").textContent = e.message;
+        }
+      };
+      $("toggle").onclick = async () => {
+        try {
+          const state = await api("/api/state");
+          await api(state.running ? "/api/engine/stop" : "/api/engine/start", { method: "POST" });
+          refresh();
+        } catch (e) {
+          $("err").textContent = e.message;
+        }
+      };
+      $("post").onclick = async () => {
+        try {
+          await api("/api/queue/post", { method: "POST", body: "{}" });
+          refresh();
+        } catch (e) {
+          $("err").textContent = e.message;
+        }
+      };
+      refresh();
+      setInterval(refresh, 4000);
+    </script>
+  </body>
+</html>
